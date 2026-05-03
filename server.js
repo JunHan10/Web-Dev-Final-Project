@@ -18,7 +18,7 @@ require('./database/db.js')
 app.use('/api/users', require('./routes/users.js'))
 app.use('/api/jobs', require('./routes/jobs.js'))
 app.use('/api/skills', require('./routes/skills.js'))
-app.use('/api/certifications', require('./routes/certifications.js'))
+app.use('/api/certs', require('./routes/certs.js'))
 app.use('/api/awards', require('./routes/awards.js'))
 app.use('/api/resumes', require('./routes/resumes.js'))
 app.use('/api/ai', require('./routes/ai.js'))
@@ -29,5 +29,5 @@ app.get('/', (req, res) => {
 })
 
 app.listen(PORT, () => {
-    console.log(`ResumeForge server running on http://localhost:${PORT}`)
+    console.log(`ResumAi server running on http://localhost:${PORT}`)
 })

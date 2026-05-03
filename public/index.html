@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ResumeForge</title>
+    <title>ResumAi</title>
     
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <link rel="manifest" href="assets/site.webmanifest">
     <meta name="theme-color" content="#008cba">
     
-    <!-- All local files - NO CDNs -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/yeti.min.css" rel="stylesheet">
+    <link href="css/pulse.min.css" rel="stylesheet">
     <link href="css/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
     <link href="css/print.css" rel="stylesheet" media="print">
 </head>
 <body>
     
     <!-- ============== LOGIN VIEW ============== -->
-    <div id="divLogin" class="view d-flex justify-content-center align-items-center min-vh-100">
+    <div id="divLogin" class="view">
+        <div class="d-flex justify-content-center align-items-center min-vh-100">
         <div class="card col-11 col-md-5">
             <div class="card-body">
-                <h1 class="text-center mb-4">ResumeForge</h1>
+                <h1 class="text-center mb-4">ResumAi</h1>
                 <form>
                     <label class="form-label" for="txtEmail">Email</label>
                     <input class="form-control" id="txtEmail" type="email">
@@ -35,24 +34,68 @@
                 </form>
             </div>
         </div>
+        </div>
     </div>
-    
+
     <!-- ============== REGISTER VIEW ============== -->
     <div id="divRegister" class="view" style="display:none">
-        <!-- TODO: Copy your registration form from your HippoExchange app.js project -->
-        <!-- Include: name, address, city, state, ZIP, phone, email, password -->
+        <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card col-11 col-md-6">
+            <div class="card-body">
+                <h1 class="text-center mb-4">Create Account</h1>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label" for="txtRegFirstName">First Name</label>
+                            <input class="form-control" id="txtRegFirstName" type="text">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="txtRegLastName">Last Name</label>
+                            <input class="form-control" id="txtRegLastName" type="text">
+                        </div>
+                    </div>
+                    <label class="form-label mt-2" for="txtRegEmail">Email</label>
+                    <input class="form-control" id="txtRegEmail" type="email">
+                    <label class="form-label mt-2" for="txtRegPassword">Password</label>
+                    <input class="form-control" id="txtRegPassword" type="password">
+                    <label class="form-label mt-2" for="txtRegPhone">Phone</label>
+                    <input class="form-control" id="txtRegPhone" type="tel">
+                    <label class="form-label mt-2" for="txtRegStreet1">Street Address</label>
+                    <input class="form-control" id="txtRegStreet1" type="text" placeholder="Street line 1">
+                    <input class="form-control mt-1" id="txtRegStreet2" type="text" placeholder="Street line 2 (optional)">
+                    <div class="row mt-2">
+                        <div class="col-md-5">
+                            <label class="form-label" for="txtRegCity">City</label>
+                            <input class="form-control" id="txtRegCity" type="text">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label" for="txtRegState">State</label>
+                            <input class="form-control" id="txtRegState" type="text" maxlength="2">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" for="txtRegZIP">ZIP</label>
+                            <input class="form-control" id="txtRegZIP" type="text" maxlength="10">
+                        </div>
+                    </div>
+                    <hr>
+                    <button id="btnRegister" class="btn btn-primary col-12 mt-2" type="button">Create Account</button>
+                    <button id="btnBackToLogin" class="btn btn-secondary col-12 mt-2" type="button">Back to Login</button>
+                </form>
+            </div>
+        </div>
+        </div>
     </div>
-    
+
     <!-- ============== MAIN APP VIEW ============== -->
     <div id="divApp" class="view" style="display:none">
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <span class="navbar-brand">ResumeForge</span>
+                <span class="navbar-brand">ResumAi</span>
                 <div class="navbar-nav">
                     <button class="btn btn-link nav-link text-white" data-section="dashboard">Dashboard</button>
                     <button class="btn btn-link nav-link text-white" data-section="jobs">Jobs</button>
                     <button class="btn btn-link nav-link text-white" data-section="skills">Skills</button>
-                    <button class="btn btn-link nav-link text-white" data-section="certifications">Certifications</button>
+                    <button class="btn btn-link nav-link text-white" data-section="certs">certs</button>
                     <button class="btn btn-link nav-link text-white" data-section="awards">Awards</button>
                     <button class="btn btn-link nav-link text-white" data-section="resumes">Resumes</button>
                     <button class="btn btn-link nav-link text-white" data-section="settings">Settings</button>
@@ -82,8 +125,8 @@
                 <!-- TODO: Build category + skill UI -->
             </div>
             
-            <div id="divCertifications" class="section" style="display:none">
-                <h2>Certifications</h2>
+            <div id="divcerts" class="section" style="display:none">
+                <h2>certs</h2>
                 <div id="divCertsList"></div>
                 <!-- TODO: Cert form and list -->
             </div>
@@ -92,6 +135,8 @@
                 <h2>Awards</h2>
                 <div id="divAwardsList"></div>
                 <!-- TODO: Award form and list -->
+
+
             </div>
             
             <div id="divResumes" class="section" style="display:none">
@@ -99,9 +144,13 @@
                 <div id="divResumesList"></div>
                 <div id="divResumeBuilder" style="display:none">
                     <!-- TODO: Checkboxes for selecting jobs/skills/certs/awards -->
+
+
                 </div>
                 <div id="divResumePreview" style="display:none">
                     <!-- TODO: Rendered resume goes here -->
+
+
                     <button id="btnPrintResume" class="btn btn-primary no-print">Print / Save as PDF</button>
                 </div>
             </div>
@@ -120,7 +169,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="aboutModalLabel">About ResumeForge</h5>
+                    <h5 class="modal-title" id="aboutModalLabel">About ResumAi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -141,7 +190,6 @@
         </div>
     </div>
     
-    <!-- All local scripts - NO CDNs -->
     <script src="js/lib/jquery-3.7.1.min.js"></script>
     <script src="js/lib/bootstrap.bundle.min.js"></script>
     <script src="js/lib/sweetalert2.min.js"></script>
@@ -151,10 +199,10 @@
     <script src="js/auth.js"></script>
     <script src="js/jobs.js"></script>
     <script src="js/skills.js"></script>
-    <script src="js/certifications.js"></script>
+    <script src="js/certs.js"></script>
     <script src="js/awards.js"></script>
     <script src="js/resumeBuilder.js"></script>
-    <script src="js/resumeRenderer.js"></script>
+    <script src="js/resumeRender.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

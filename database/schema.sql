@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS skills (
     FOREIGN KEY (intCategoryId) REFERENCES skillCategories(intCategoryId) ON DELETE CASCADE
 );
 
--- Certifications
-CREATE TABLE IF NOT EXISTS certifications (
+-- certs
+CREATE TABLE IF NOT EXISTS certs (
     intCertId INTEGER PRIMARY KEY AUTOINCREMENT,
     intUserId INTEGER NOT NULL,
     strCertName TEXT NOT NULL,
@@ -97,12 +97,12 @@ CREATE TABLE IF NOT EXISTS resumeSkills (
     FOREIGN KEY (intSkillId) REFERENCES skills(intSkillId) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS resumeCertifications (
+CREATE TABLE IF NOT EXISTS resumecerts (
     intResumeId INTEGER,
     intCertId INTEGER,
     PRIMARY KEY (intResumeId, intCertId),
     FOREIGN KEY (intResumeId) REFERENCES resumes(intResumeId) ON DELETE CASCADE,
-    FOREIGN KEY (intCertId) REFERENCES certifications(intCertId) ON DELETE CASCADE
+    FOREIGN KEY (intCertId) REFERENCES certs(intCertId) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS resumeAwards (

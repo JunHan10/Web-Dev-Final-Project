@@ -17,10 +17,19 @@ router.post('/register', (req, res) => {
             strPhone, strStreet1, strStreet2, strCity, strState, strZIP
         } = req.body
 
-        // TODO: Add server-side validation here (length checks, regex)
+        if (!strFirstName || !strLastName || !strEmail || !strPassword) {
+            return res.status(400).json({ success: false, error: 'First name, last name, email, and password are required' })
+        }
+        if (strPassword.length < 6) {
+            return res.status(400).json({ success: false, error: 'Password must be at least 6 characters' })
+        }
+        const regEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!regEmail.test(strEmail)) {
+            return res.status(400).json({ success: false, error: 'Invalid email address' })
+        }
 
         const strPasswordHash = hashPassword(strPassword)
-        
+
         const stmt = objDb.prepare(`
             INSERT INTO users (strFirstName, strLastName, strEmail, strPasswordHash,
                                strPhone, strStreet1, strStreet2, strCity, strState, strZIP)
@@ -28,7 +37,7 @@ router.post('/register', (req, res) => {
         `)
         const result = stmt.run(
             strFirstName, strLastName, strEmail, strPasswordHash,
-            strPhone, strStreet2 || '', strStreet1, strCity, strState, strZIP
+            strPhone || '', strStreet1 || '', strStreet2 || '', strCity || '', strState || '', strZIP || ''
         )
         
         res.json({ success: true, intUserId: result.lastInsertRowid })
@@ -60,12 +69,57 @@ router.post('/login', (req, res) => {
 
 // GET /api/users/:id - Get user info
 router.get('/:id', (req, res) => {
-    // TODO: Fetch user by intUserId, exclude password hash from response
+    try {
+        const objUser = objDb.prepare(
+            'SELECT intUserId, strFirstName, strLastName, strEmail, strPhone, strStreet1, strStreet2, strCity, strState, strZIP FROM users WHERE intUserId = ?'
+        ).get(req.params.id)
+
+        if (objUser) {
+            res.json({ success: true, user: objUser })
+        } else {
+            res.status(404).json({ success: false, error: 'User not found' })
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message })
+    }
 })
 
 // PUT /api/users/:id - Update user info (including Gemini API key)
 router.put('/:id', (req, res) => {
-    // TODO: Update fields - especially strGeminiApiKey for AI feature
+    try {
+        const {
+            strFirstName, strLastName, strPhone,
+            strStreet1, strStreet2, strCity, strState, strZIP,
+            strGeminiApiKey
+        } = req.body
+
+        const result = objDb.prepare(`
+            UPDATE users SET
+                strFirstName     = COALESCE(?, strFirstName),
+                strLastName      = COALESCE(?, strLastName),
+                strPhone         = COALESCE(?, strPhone),
+                strStreet1       = COALESCE(?, strStreet1),
+                strStreet2       = COALESCE(?, strStreet2),
+                strCity          = COALESCE(?, strCity),
+                strState         = COALESCE(?, strState),
+                strZIP           = COALESCE(?, strZIP),
+                strGeminiApiKey  = COALESCE(?, strGeminiApiKey)
+            WHERE intUserId = ?
+        `).run(
+            strFirstName ?? null, strLastName ?? null, strPhone ?? null,
+            strStreet1 ?? null, strStreet2 ?? null, strCity ?? null,
+            strState ?? null, strZIP ?? null,
+            strGeminiApiKey ?? null, req.params.id
+        )
+
+        if (result.changes > 0) {
+            res.json({ success: true })
+        } else {
+            res.status(404).json({ success: false, error: 'User not found' })
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message })
+    }
 })
 
 module.exports = router

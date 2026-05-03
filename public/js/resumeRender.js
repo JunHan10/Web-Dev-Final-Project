@@ -4,7 +4,7 @@ async function renderResume(intResumeId) {
     // TODO: Build clean HTML for header (name, contact info)
     // TODO: Section: Experience (jobs with selected bullet points only)
     // TODO: Section: Skills (grouped by category)
-    // TODO: Section: Certifications
+    // TODO: Section: certs
     // TODO: Section: Awards
     // TODO: Drop the HTML into #divResumePreview
 }
