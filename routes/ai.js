@@ -25,16 +25,18 @@ router.post('/review', async (req, res) => {
         // ask so the model doesn't waste tokens on generic resume advice.
         const objPrompts = {
             job_responsibility:
-                'Review this resume bullet for a past job. Suggest a stronger rewrite that leads with an action verb and includes a quantifiable result if one is implied. Note any vague phrasing.',
+                'Review this resume bullet for a past job. Suggest a stronger rewrite that leads with an action verb and includes a quantifiable result if one is implied. Note any vague phrasing. Be very concise.',
             skill:
-                'Review this skill entry. Say whether it is specific enough to belong on a resume; if it is too vague (e.g. "good with computers"), suggest a more concrete phrasing.',
+                'Review this skill entry. Say whether it is specific enough to belong on a resume; if it is too vague (e.g. "good with computers"), suggest a more concrete phrasing. Be very concise.',
             cert:
-                'Review this certification entry. Comment on how to phrase it for a resume (full credential name, issuer, date) and whether it is worth listing for a typical software/engineering role.',
+                'Review this certification entry. Comment on how to phrase it for a resume (full credential name, issuer, date) and whether it is worth listing for a typical software/engineering role. Be very concise.',
             award:
-                'Review this award entry. Suggest a one-line phrasing that names the award, the granter, and what it recognized — concise enough for a resume bullet.'
+                'Review this award entry. Suggest a one-line phrasing that names the award, the granter, and what it recognized — concise enough for a resume bullet. Be very concise.',
+            remember:
+                'All suggestions must be concise but informative. No more than one sentence.'
         }
         const strInstruction = objPrompts[strContentType]
-            || `Review this ${strContentType} entry and suggest specific resume-ready improvements.`
+            || `Review this ${strContentType} entry and suggest specific resume-ready improvements. Be very concise.`
 
         // Quote-safe interpolation: replace " in user content so it can't break the JSON-ish prompt frame
         const strSafeContent = String(strContent).replace(/"/g, '\\"')
@@ -42,7 +44,7 @@ router.post('/review', async (req, res) => {
         
         // Call Gemini API
         const objResponse = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${strApiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${strApiKey}`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
