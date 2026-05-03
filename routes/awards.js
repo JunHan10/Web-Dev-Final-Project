@@ -23,10 +23,12 @@ router.post('/', (req, res) => {
             return res.status(400).json({ success: false, error: 'User and award name are required' })
         }
 
-        const result = objDb.prepare(`
+        const result = objDb.prepare(
+            `
             INSERT INTO awards (intUserId, strAwardName, strGranter, datReceived, strDescription)
             VALUES (?, ?, ?, ?, ?)
-        `).run(
+            `
+        ).run(
             intUserId, strAwardName,
             strGranter || '', datReceived || '', strDescription || ''
         )

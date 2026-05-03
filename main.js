@@ -20,12 +20,12 @@ const createWindow = () => {
     // Load index.html from the public folder served by Express
     objWindow.loadURL('http://localhost:3000')
     
-    // TODO: Comment this line out before final submission
+    // TODO: Comment this line out before final submission***********************************************************
     objWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
-    // Give Express a moment to start before opening the window
+    // Express delay start effect
     setTimeout(() => {
         createWindow()
     }, 500)

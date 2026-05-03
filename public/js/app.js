@@ -22,6 +22,7 @@ function showSection(strSectionName) {
     else if (strSectionName === 'skills') loadSkills()
     else if (strSectionName === 'certs') loadCerts()
     else if (strSectionName === 'awards') loadAwards()
+    else if (strSectionName === 'resumes') loadResumesList()
 }
 
 // Wire up nav buttons

@@ -1,0 +1,54 @@
+/* Loaded only during print (media="print" on the <link>).
+   Goal: produce a clean single-column PDF of #divResumePreview, with
+   the app chrome (navbar, buttons, etc.) stripped out. */
+
+@page {
+    size: letter;
+    margin: 0.5in;
+}
+
+html, body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+}
+
+/* Strip app chrome */
+.navbar,
+.no-print {
+    display: none !important;
+}
+
+/* Reset Bootstrap's container padding so the resume sits flush with the page margin */
+.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Force black text everywhere; Bootstrap's text-muted prints too gray to read */
+.text-muted {
+    color: #444 !important;
+}
+
+/* Tighten resume sections for print */
+#divResumePreview h1 { font-size: 22pt; }
+#divResumePreview h3 { font-size: 13pt; margin-top: 12pt; }
+#divResumePreview p,
+#divResumePreview li { margin-bottom: 4pt; }
+
+/* Avoid awkward page breaks mid-section */
+#divResumePreview section,
+#divResumePreview li {
+    page-break-inside: avoid;
+}
+#divResumePreview h3 {
+    page-break-after: avoid;
+}
+
+/* Hide link underlines and color so URLs don't print as blue */
+a, a:visited {
+    color: inherit !important;
+    text-decoration: none !important;
+}

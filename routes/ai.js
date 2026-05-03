@@ -21,9 +21,24 @@ router.post('/review', async (req, res) => {
             })
         }
         
-        // Build a prompt based on the content type
-        // TODO: Customize prompts for jobs, skills, certs, awards
-        const strPrompt = `You are a resume writing coach. Review this ${strContentType} entry and suggest specific improvements for clarity, action verbs, and quantifiable results. Keep feedback under 100 words.\n\nContent: "${strContent}"`
+        // Build a prompt based on the content type. Each type gets a focused
+        // ask so the model doesn't waste tokens on generic resume advice.
+        const objPrompts = {
+            job_responsibility:
+                'Review this resume bullet for a past job. Suggest a stronger rewrite that leads with an action verb and includes a quantifiable result if one is implied. Note any vague phrasing.',
+            skill:
+                'Review this skill entry. Say whether it is specific enough to belong on a resume; if it is too vague (e.g. "good with computers"), suggest a more concrete phrasing.',
+            cert:
+                'Review this certification entry. Comment on how to phrase it for a resume (full credential name, issuer, date) and whether it is worth listing for a typical software/engineering role.',
+            award:
+                'Review this award entry. Suggest a one-line phrasing that names the award, the granter, and what it recognized — concise enough for a resume bullet.'
+        }
+        const strInstruction = objPrompts[strContentType]
+            || `Review this ${strContentType} entry and suggest specific resume-ready improvements.`
+
+        // Quote-safe interpolation: replace " in user content so it can't break the JSON-ish prompt frame
+        const strSafeContent = String(strContent).replace(/"/g, '\\"')
+        const strPrompt = `You are a resume writing coach. ${strInstruction} Keep feedback under 100 words.\n\nContent: "${strSafeContent}"`
         
         // Call Gemini API
         const objResponse = await fetch(
