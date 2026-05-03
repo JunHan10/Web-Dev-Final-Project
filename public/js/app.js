@@ -19,6 +19,9 @@ function showSection(strSectionName) {
     document.querySelector(strDivId).style.display = 'block'
 
     if (strSectionName === 'jobs') loadJobs()
+    else if (strSectionName === 'skills') loadSkills()
+    else if (strSectionName === 'certs') loadCerts()
+    else if (strSectionName === 'awards') loadAwards()
 }
 
 // Wire up nav buttons
