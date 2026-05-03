@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeForge</title>
+    
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="assets/site.webmanifest">
+    <meta name="theme-color" content="#008cba">
+    
+    <!-- All local files - NO CDNs -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/yeti.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/print.css" rel="stylesheet" media="print">
+</head>
+<body>
+    
+    <!-- ============== LOGIN VIEW ============== -->
+    <div id="divLogin" class="view d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card col-11 col-md-5">
+            <div class="card-body">
+                <h1 class="text-center mb-4">ResumeForge</h1>
+                <form>
+                    <label class="form-label" for="txtEmail">Email</label>
+                    <input class="form-control" id="txtEmail" type="email">
+                    <label class="form-label mt-2" for="txtPassword">Password</label>
+                    <input class="form-control" id="txtPassword" type="password">
+                    <hr>
+                    <button id="btnLogin" class="btn btn-primary col-12 mt-2" type="button">Login</button>
+                    <button id="btnShowSignup" class="btn btn-secondary col-12 mt-2" type="button">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============== REGISTER VIEW ============== -->
+    <div id="divRegister" class="view" style="display:none">
+        <!-- TODO: Copy your registration form from your HippoExchange app.js project -->
+        <!-- Include: name, address, city, state, ZIP, phone, email, password -->
+    </div>
+    
+    <!-- ============== MAIN APP VIEW ============== -->
+    <div id="divApp" class="view" style="display:none">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container-fluid">
+                <span class="navbar-brand">ResumeForge</span>
+                <div class="navbar-nav">
+                    <button class="btn btn-link nav-link text-white" data-section="dashboard">Dashboard</button>
+                    <button class="btn btn-link nav-link text-white" data-section="jobs">Jobs</button>
+                    <button class="btn btn-link nav-link text-white" data-section="skills">Skills</button>
+                    <button class="btn btn-link nav-link text-white" data-section="certifications">Certifications</button>
+                    <button class="btn btn-link nav-link text-white" data-section="awards">Awards</button>
+                    <button class="btn btn-link nav-link text-white" data-section="resumes">Resumes</button>
+                    <button class="btn btn-link nav-link text-white" data-section="settings">Settings</button>
+                    <button id="btnLogout" class="btn btn-outline-light ms-2">Logout</button>
+                    <button id="btnAbout" class="btn btn-link nav-link text-white">About</button>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="container mt-4">
+            <!-- Sub-sections - shown/hidden by app.js -->
+            <div id="divDashboard" class="section">
+                <h2>Dashboard</h2>
+                <p>Welcome back, <span id="txtUserName"></span>!</p>
+                <!-- TODO: Show counts of jobs, skills, resumes -->
+            </div>
+            
+            <div id="divJobs" class="section" style="display:none">
+                <h2>Jobs <button id="btnAddJob" class="btn btn-success btn-sm">+ Add Job</button></h2>
+                <div id="divJobsList"></div>
+                <!-- TODO: Add modal/form for creating jobs -->
+            </div>
+            
+            <div id="divSkills" class="section" style="display:none">
+                <h2>Skills</h2>
+                <div id="divSkillsList"></div>
+                <!-- TODO: Build category + skill UI -->
+            </div>
+            
+            <div id="divCertifications" class="section" style="display:none">
+                <h2>Certifications</h2>
+                <div id="divCertsList"></div>
+                <!-- TODO: Cert form and list -->
+            </div>
+            
+            <div id="divAwards" class="section" style="display:none">
+                <h2>Awards</h2>
+                <div id="divAwardsList"></div>
+                <!-- TODO: Award form and list -->
+            </div>
+            
+            <div id="divResumes" class="section" style="display:none">
+                <h2>My Resumes <button id="btnNewResume" class="btn btn-success btn-sm">+ New Resume</button></h2>
+                <div id="divResumesList"></div>
+                <div id="divResumeBuilder" style="display:none">
+                    <!-- TODO: Checkboxes for selecting jobs/skills/certs/awards -->
+                </div>
+                <div id="divResumePreview" style="display:none">
+                    <!-- TODO: Rendered resume goes here -->
+                    <button id="btnPrintResume" class="btn btn-primary no-print">Print / Save as PDF</button>
+                </div>
+            </div>
+            
+            <div id="divSettings" class="section" style="display:none">
+                <h2>Settings</h2>
+                <label class="form-label" for="txtGeminiKey">Gemini API Key</label>
+                <input class="form-control" id="txtGeminiKey" type="password">
+                <button id="btnSaveKey" class="btn btn-primary mt-2">Save Key</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============== ABOUT MODAL (library attribution) ============== -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">About ResumeForge</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Built with thanks to these libraries:</p>
+                    <ul>
+                        <li>Bootstrap</li>
+                        <li>Bootswatch (Yeti theme)</li>
+                        <li>Bootstrap Icons</li>
+                        <li>jQuery</li>
+                        <li>SweetAlert2</li>
+                        <li>Express</li>
+                        <li>better-sqlite3</li>
+                        <li>Electron</li>
+                        <li>Google Gemini API</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- All local scripts - NO CDNs -->
+    <script src="js/lib/jquery-3.7.1.min.js"></script>
+    <script src="js/lib/bootstrap.bundle.min.js"></script>
+    <script src="js/lib/sweetalert2.min.js"></script>
+    
+    <!-- App scripts - load in order so dependencies resolve -->
+    <script src="js/aiHelper.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/skills.js"></script>
+    <script src="js/certifications.js"></script>
+    <script src="js/awards.js"></script>
+    <script src="js/resumeBuilder.js"></script>
+    <script src="js/resumeRenderer.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
