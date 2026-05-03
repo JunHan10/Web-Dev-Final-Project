@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
             
             // TODO: Loop through arrSelectedDetailIds and insert into resumeJobDetails
             // TODO: Loop through arrSelectedSkillIds and insert into resumeSkills
-            // TODO: Loop through arrSelectedCertIds and insert into resumecerts
+            // TODO: Loop through arrSelectedCertIds and insert into resumeCerts
             // TODO: Loop through arrSelectedAwardIds and insert into resumeAwards
             
             return intResumeId

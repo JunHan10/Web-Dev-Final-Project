@@ -17,9 +17,8 @@ function showSection(strSectionName) {
     })
     const strDivId = '#div' + strSectionName.charAt(0).toUpperCase() + strSectionName.slice(1)
     document.querySelector(strDivId).style.display = 'block'
-    
-    // TODO: Trigger data load for the section being shown
-    // e.g., if (strSectionName === 'jobs') loadJobs()
+
+    if (strSectionName === 'jobs') loadJobs()
 }
 
 // Wire up nav buttons

@@ -1,8 +1,8 @@
-async function loadcerts() {
+async function loadCerts() {
     // TODO: fetch + render certs list
 }
 
-async function createCertification(objCert) {
+async function createCert(objCert) {
     // TODO: POST to /api/certs
 }
 
