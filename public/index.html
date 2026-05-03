@@ -113,7 +113,50 @@
             <div id="divDashboard" class="section">
                 <h2>Dashboard</h2>
                 <p>Welcome back, <span id="txtUserName"></span>!</p>
-                <!-- TODO: Show counts of jobs, skills, resumes -->
+
+                <div class="row g-3 mt-2">
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0" id="spnJobsCount">&mdash;</h3>
+                                <small class="text-muted">Jobs</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0" id="spnSkillsCount">&mdash;</h3>
+                                <small class="text-muted">Skills</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0" id="spnCertsCount">&mdash;</h3>
+                                <small class="text-muted">Certifications</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h3 class="mb-0" id="spnAwardsCount">&mdash;</h3>
+                                <small class="text-muted">Awards</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">My Resumes</h5>
+                        <p class="mb-0">
+                            You have <strong id="spnResumesCount">&mdash;</strong> resume(s) saved.
+                        </p>
+                    </div>
+                </div>
             </div>
             
             <div id="divJobs" class="section" style="display:none">

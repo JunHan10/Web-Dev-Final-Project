@@ -23,6 +23,40 @@ function showSection(strSectionName) {
     else if (strSectionName === 'certs') loadCerts()
     else if (strSectionName === 'awards') loadAwards()
     else if (strSectionName === 'resumes') loadResumesList()
+    else if (strSectionName === 'dashboard') loadDashboard()
+}
+
+// Fetch each item type for the user and drop a count into the dashboard cards.
+// Skills count adds up the skills inside every category.
+async function loadDashboard() {
+    if (!objCurrentUser) return
+    const intUserId = objCurrentUser.intUserId
+
+    const setCount = (strId, n) => {
+        document.querySelector(strId).innerText = (typeof n === 'number') ? n : '?'
+    }
+
+    try {
+        const [resJobs, resSkills, resCerts, resAwards, resResumes] = await Promise.all([
+            fetch(`${strApiBase}/jobs/user/${intUserId}`).then(r => r.json()),
+            fetch(`${strApiBase}/skills/user/${intUserId}`).then(r => r.json()),
+            fetch(`${strApiBase}/certs/user/${intUserId}`).then(r => r.json()),
+            fetch(`${strApiBase}/awards/user/${intUserId}`).then(r => r.json()),
+            fetch(`${strApiBase}/resumes/user/${intUserId}`).then(r => r.json())
+        ])
+
+        setCount('#spnJobsCount',    resJobs.success    ? resJobs.jobs.length       : null)
+        setCount('#spnCertsCount',   resCerts.success   ? resCerts.certs.length     : null)
+        setCount('#spnAwardsCount',  resAwards.success  ? resAwards.awards.length   : null)
+        setCount('#spnResumesCount', resResumes.success ? resResumes.resumes.length : null)
+
+        const intSkillTotal = resSkills.success
+            ? resSkills.categories.reduce((sum, cat) => sum + cat.arrSkills.length, 0)
+            : null
+        setCount('#spnSkillsCount', intSkillTotal)
+    } catch (err) {
+        console.error('Dashboard load failed:', err)
+    }
 }
 
 // Wire up nav buttons
