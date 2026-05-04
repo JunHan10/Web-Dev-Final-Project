@@ -15,7 +15,8 @@ html, body {
 
 /* Strip app chrome */
 .navbar,
-.no-print {
+.no-print,
+#divResumes > h2 {
     display: none !important;
 }
 
