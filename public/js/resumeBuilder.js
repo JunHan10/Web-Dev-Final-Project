@@ -1,3 +1,95 @@
+// ===== Per-section render helpers (checkbox UI for the resume builder) =====
+
+function renderJobsCheckboxes(arrJobs) {
+    if (arrJobs.length === 0) return '<p class="text-muted">No jobs yet.</p>'
+
+    return arrJobs.map(job => `
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title mb-1">
+                    ${escHtml(job.strTitle)}
+                    <span class="text-muted">@ ${escHtml(job.strCompany)}</span>
+                </h5>
+                <p class="text-muted mb-2">
+                    ${escHtml(fmtJobDate(job.datStartDate))} &ndash; ${escHtml(fmtJobDate(job.datEndDate))}
+                </p>
+                ${renderJobDetailCheckboxes(job.arrDetails)}
+            </div>
+        </div>
+    `).join('')
+}
+
+function renderJobDetailCheckboxes(arrDetails) {
+    if (arrDetails.length === 0) {
+        return '<p class="text-muted small mb-0">No responsibilities to choose from.</p>'
+    }
+    return arrDetails.map(d => `
+        <div class="form-check">
+            <input class="form-check-input chk-detail" type="checkbox"
+                   id="chkDetail${d.intDetailId}" value="${d.intDetailId}">
+            <label class="form-check-label" for="chkDetail${d.intDetailId}">
+                ${escHtml(d.strDetail)}
+            </label>
+        </div>
+    `).join('')
+}
+
+function renderSkillsCheckboxes(arrCategories) {
+    if (arrCategories.length === 0) return '<p class="text-muted">No skills yet.</p>'
+
+    return arrCategories.map(cat => `
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">${escHtml(cat.strCategoryName)}</h5>
+                ${cat.arrSkills.length === 0
+                    ? '<p class="text-muted small mb-0">No skills in this category.</p>'
+                    : cat.arrSkills.map(s => `
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input chk-skill" type="checkbox"
+                                   id="chkSkill${s.intSkillId}" value="${s.intSkillId}">
+                            <label class="form-check-label" for="chkSkill${s.intSkillId}">
+                                ${escHtml(s.strSkillName)}
+                            </label>
+                        </div>
+                    `).join('')
+                }
+            </div>
+        </div>
+    `).join('')
+}
+
+function renderCertsCheckboxes(arrCerts) {
+    if (arrCerts.length === 0) return '<p class="text-muted">No certifications yet.</p>'
+
+    return arrCerts.map(c => `
+        <div class="form-check">
+            <input class="form-check-input chk-cert" type="checkbox"
+                   id="chkCert${c.intCertId}" value="${c.intCertId}">
+            <label class="form-check-label" for="chkCert${c.intCertId}">
+                ${escHtml(c.strCertName)}
+                ${c.strIssuer ? `<span class="text-muted">&mdash; ${escHtml(c.strIssuer)}</span>` : ''}
+            </label>
+        </div>
+    `).join('')
+}
+
+function renderAwardsCheckboxes(arrAwards) {
+    if (arrAwards.length === 0) return '<p class="text-muted">No awards yet.</p>'
+
+    return arrAwards.map(a => `
+        <div class="form-check">
+            <input class="form-check-input chk-award" type="checkbox"
+                   id="chkAward${a.intAwardId}" value="${a.intAwardId}">
+            <label class="form-check-label" for="chkAward${a.intAwardId}">
+                ${escHtml(a.strAwardName)}
+                ${a.strGranter ? `<span class="text-muted">&mdash; ${escHtml(a.strGranter)}</span>` : ''}
+            </label>
+        </div>
+    `).join('')
+}
+
+// ===== Main builder flow =====
+
 // Show the resume builder view: fetches every item type for the user and
 // renders a checkbox grid so the user can pick what goes onto a resume.
 async function showResumeBuilder() {
@@ -19,87 +111,6 @@ async function showResumeBuilder() {
             fetch(`${strApiBase}/awards/user/${intUserId}`).then(r => r.json())
         ])
 
-        const arrJobs       = resJobs.jobs       || []
-        const arrCategories = resSkills.categories || []
-        const arrCerts      = resCerts.certs     || []
-        const arrAwards     = resAwards.awards   || []
-
-        const strJobsSection = arrJobs.length === 0
-            ? '<p class="text-muted">No jobs yet.</p>'
-            : arrJobs.map(job => `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title mb-1">
-                            ${escHtml(job.strTitle)}
-                            <span class="text-muted">@ ${escHtml(job.strCompany)}</span>
-                        </h5>
-                        <p class="text-muted mb-2">
-                            ${escHtml(fmtJobDate(job.datStartDate))} &ndash; ${escHtml(fmtJobDate(job.datEndDate))}
-                        </p>
-                        ${job.arrDetails.length === 0
-                            ? '<p class="text-muted small mb-0">No responsibilities to choose from.</p>'
-                            : job.arrDetails.map(d => `
-                                <div class="form-check">
-                                    <input class="form-check-input chk-detail" type="checkbox"
-                                           id="chkDetail${d.intDetailId}" value="${d.intDetailId}">
-                                    <label class="form-check-label" for="chkDetail${d.intDetailId}">
-                                        ${escHtml(d.strDetail)}
-                                    </label>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
-                </div>
-            `).join('')
-
-        const strSkillsSection = arrCategories.length === 0
-            ? '<p class="text-muted">No skills yet.</p>'
-            : arrCategories.map(cat => `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">${escHtml(cat.strCategoryName)}</h5>
-                        ${cat.arrSkills.length === 0
-                            ? '<p class="text-muted small mb-0">No skills in this category.</p>'
-                            : cat.arrSkills.map(s => `
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input chk-skill" type="checkbox"
-                                           id="chkSkill${s.intSkillId}" value="${s.intSkillId}">
-                                    <label class="form-check-label" for="chkSkill${s.intSkillId}">
-                                        ${escHtml(s.strSkillName)}
-                                    </label>
-                                </div>
-                            `).join('')
-                        }
-                    </div>
-                </div>
-            `).join('')
-
-        const strCertsSection = arrCerts.length === 0
-            ? '<p class="text-muted">No certifications yet.</p>'
-            : arrCerts.map(c => `
-                <div class="form-check">
-                    <input class="form-check-input chk-cert" type="checkbox"
-                           id="chkCert${c.intCertId}" value="${c.intCertId}">
-                    <label class="form-check-label" for="chkCert${c.intCertId}">
-                        ${escHtml(c.strCertName)}
-                        ${c.strIssuer ? `<span class="text-muted">&mdash; ${escHtml(c.strIssuer)}</span>` : ''}
-                    </label>
-                </div>
-            `).join('')
-
-        const strAwardsSection = arrAwards.length === 0
-            ? '<p class="text-muted">No awards yet.</p>'
-            : arrAwards.map(a => `
-                <div class="form-check">
-                    <input class="form-check-input chk-award" type="checkbox"
-                           id="chkAward${a.intAwardId}" value="${a.intAwardId}">
-                    <label class="form-check-label" for="chkAward${a.intAwardId}">
-                        ${escHtml(a.strAwardName)}
-                        ${a.strGranter ? `<span class="text-muted">&mdash; ${escHtml(a.strGranter)}</span>` : ''}
-                    </label>
-                </div>
-            `).join('')
-
         divBuilder.innerHTML = `
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3 class="mb-0">Build a Resume</h3>
@@ -116,16 +127,16 @@ async function showResumeBuilder() {
             </div>
 
             <h4 class="mt-4">Experience</h4>
-            ${strJobsSection}
+            ${renderJobsCheckboxes(resJobs.jobs || [])}
 
             <h4 class="mt-4">Skills</h4>
-            ${strSkillsSection}
+            ${renderSkillsCheckboxes(resSkills.categories || [])}
 
             <h4 class="mt-4">Certifications</h4>
-            ${strCertsSection}
+            ${renderCertsCheckboxes(resCerts.certs || [])}
 
             <h4 class="mt-4">Awards</h4>
-            ${strAwardsSection}
+            ${renderAwardsCheckboxes(resAwards.awards || [])}
         `
 
         document.querySelector('#btnGenerateResume').addEventListener('click', collectAndSaveResume)
@@ -181,6 +192,8 @@ async function collectAndSaveResume() {
         Swal.fire({ title: 'Error', text: err.message, icon: 'error' })
     }
 }
+
+// ===== Resume list (cards on the Resumes tab) =====
 
 async function loadResumesList() {
     if (!objCurrentUser) return
